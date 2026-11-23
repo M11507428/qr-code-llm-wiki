@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#5b5bd6"/></marker></defs>
+<rect width="1200" height="430" rx="28" fill="#f7f8fc"/>
+<style>.t{font:700 25px sans-serif;fill:#1d2433}.s{font:18px sans-serif;fill:#515a6b}.b{fill:white;stroke:#cbd2e1;stroke-width:2}.c{fill:#eef0ff;stroke:#7777dc;stroke-width:2}.l{stroke:#5b5bd6;stroke-width:4;fill:none;marker-end:url(#a)}</style>
+<g>
+<rect class="b" x="45" y="145" rx="18" width="175" height="110"/><text class="t" x="132" y="188" text-anchor="middle">取得資料</text><text class="s" x="132" y="220" text-anchor="middle">7篇來源</text>
+<rect class="b" x="270" y="145" rx="18" width="175" height="110"/><text class="t" x="357" y="188" text-anchor="middle">Ingest Wiki</text><text class="s" x="357" y="220" text-anchor="middle">切成知識頁</text>
+<rect class="b" x="495" y="145" rx="18" width="175" height="110"/><text class="t" x="582" y="188" text-anchor="middle">查詢與整理</text><text class="s" x="582" y="220" text-anchor="middle">只取教學重點</text>
+<rect class="c" x="720" y="145" rx="18" width="175" height="110"/><text class="t" x="807" y="188" text-anchor="middle">事實檢查</text><text class="s" x="807" y="220" text-anchor="middle">來源+實驗</text>
+<rect class="b" x="945" y="145" rx="18" width="210" height="110"/><text class="t" x="1050" y="188" text-anchor="middle">產生HTML簡報</text><text class="s" x="1050" y="220" text-anchor="middle">教學化改寫</text>
+<path class="l" d="M220 200 H260"/><path class="l" d="M445 200 H485"/><path class="l" d="M670 200 H710"/><path class="l" d="M895 200 H935"/>
+<path class="l" d="M807 145 C807 55 582 55 582 135"/><text class="s" x="695" y="65" text-anchor="middle">不一致→回到Wiki查詢／重整</text>
+<path class="l" d="M1050 255 C1050 350 807 350 807 265"/><text class="s" x="925" y="378" text-anchor="middle">簡報敘述過度簡化→退回檢查</text>
+</g></svg>
