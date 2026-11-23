@@ -1,0 +1,41 @@
+﻿ECC level,damage pattern,nominal area ratio,OpenCV decoded,version modules
+L,original,0,True,41
+L,center,0.05,True,41
+L,center,0.08,False,41
+L,center,0.1,False,41
+L,center,0.12,False,41
+L,center,0.15,False,41
+L,center,0.18,False,41
+L,center,0.2,False,41
+L,center,0.25,False,41
+L,top-left finder,,False,41
+M,original,0,True,41
+M,center,0.05,True,41
+M,center,0.08,True,41
+M,center,0.1,True,41
+M,center,0.12,True,41
+M,center,0.15,False,41
+M,center,0.18,False,41
+M,center,0.2,False,41
+M,center,0.25,False,41
+M,top-left finder,,False,41
+Q,original,0,True,41
+Q,center,0.05,True,41
+Q,center,0.08,True,41
+Q,center,0.1,True,41
+Q,center,0.12,True,41
+Q,center,0.15,True,41
+Q,center,0.18,True,41
+Q,center,0.2,False,41
+Q,center,0.25,False,41
+Q,top-left finder,,False,41
+H,original,0,True,41
+H,center,0.05,True,41
+H,center,0.08,True,41
+H,center,0.1,True,41
+H,center,0.12,True,41
+H,center,0.15,True,41
+H,center,0.18,True,41
+H,center,0.2,True,41
+H,center,0.25,False,41
+H,top-left finder,,False,41

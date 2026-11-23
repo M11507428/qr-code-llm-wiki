@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Code LLM Wiki｜為什麼缺一角還能掃？</title>
+<style>
+:root{--bg:#f5f6fb;--card:#fff;--text:#1e2432;--muted:#667085;--line:#dfe3ec;--accent:#5b5bd6;--accent2:#8b5cf6;--good:#14845e;--warn:#b46713;--bad:#b33b4b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.7}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+header{background:linear-gradient(120deg,#15172a,#343466 65%,#5b3fa1);color:#fff;padding:72px 24px 64px}.hero{max-width:1120px;margin:auto}.eyebrow{font-weight:800;letter-spacing:.08em;color:#c9c9ff}.hero h1{font-size:clamp(38px,6vw,68px);line-height:1.08;margin:12px 0}.hero p{max-width:760px;font-size:20px;color:#e9e8ff}.pill{display:inline-block;background:#ffffff18;border:1px solid #ffffff35;padding:7px 12px;border-radius:999px;margin:4px 7px 0 0}
+nav{position:sticky;top:0;z-index:10;background:#ffffffee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}nav .inner{max-width:1120px;margin:auto;padding:12px 20px;display:flex;gap:18px;overflow:auto;white-space:nowrap;font-weight:700}
+main{max-width:1120px;margin:0 auto;padding:36px 20px 90px}.section{scroll-margin-top:76px;margin-top:34px}.section h2{font-size:34px;margin:0 0 14px}.lead{font-size:19px;color:#4f5869;max-width:850px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 7px 28px #33334d0b}.card h3{margin:0 0 10px;font-size:23px}.tag{font-size:13px;font-weight:800;padding:4px 9px;border-radius:999px;background:#efefff;color:#4747b9;display:inline-block;margin-bottom:10px}.note{border-left:5px solid var(--accent);background:#f0f0ff;padding:18px 20px;border-radius:12px;margin:18px 0}.warn{border-left-color:var(--warn);background:#fff7ea}.good{border-left-color:var(--good);background:#eefbf6}.bad{border-left-color:var(--bad);background:#fff0f2}.big-answer{font-size:24px;font-weight:800;line-height:1.45}.structure{width:100%;border-radius:16px;border:1px solid var(--line);background:#fff}.flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:16px 0}.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-weight:700}.arrow{font-size:24px;color:var(--accent)}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left}th{background:#f1f2f8}.ok{color:var(--good);font-weight:800}.fail{color:var(--bad);font-weight:800}.source{font-size:14px;color:var(--muted);padding-top:12px;border-top:1px dashed var(--line);margin-top:16px}.source-list{counter-reset:s}.source-item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:12px 0}.source-item:before{counter-increment:s;content:"資料 " counter(s);font-size:12px;font-weight:900;color:#fff;background:var(--accent);padding:4px 8px;border-radius:999px;margin-right:8px}.mapping{display:grid;grid-template-columns:180px 1fr;gap:8px 14px;align-items:start}.mapping b{color:#3a3a9d}.btnrow{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.btn{display:inline-block;padding:12px 18px;border-radius:12px;background:var(--accent);color:#fff;font-weight:800}.btn.secondary{background:#fff;color:var(--accent);border:1px solid #cfd0ff}.btn:hover{text-decoration:none;filter:brightness(.98)}footer{color:var(--muted);font-size:14px;text-align:center;padding:30px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.mapping{grid-template-columns:1fr}.hero{padding:0}.section h2{font-size:29px}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<div class="eyebrow">LLM WIKI · QR CODE KNOWLEDGE BASE</div>
+<h1>QR Code為什麼<br>缺一角還能掃？</h1>
+<p>從定位圖樣、資料模組與Reed-Solomon錯誤更正開始，理解QR Code「耐破損」真正的原因，也釐清「H級可以壞30%」這個常見但不精確的說法。</p>
+<div><span class="pill">7篇資料來源</span><span class="pill">6個知識頁</span><span class="pill">1次解碼實驗</span><span class="pill">教學HTML簡報</span></div>
+</div></header>
+<nav><div class="inner"><a href="#overview">總覽</a><a href="#structure">結構</a><a href="#correction">錯誤更正</a><a href="#decode">解碼流程</a><a href="#damage">破損迷思</a><a href="#experiment">實驗</a><a href="#workflow">Workflow</a><a href="#sources">Ingest資料</a></div></nav>
+<main>
+<section class="section" id="overview"><h2>1. 先講結論</h2>
+<p class="lead">QR Code能在部分破損時被讀取，主要不是因為手機「猜得到」，而是QR Code本來就把錯誤更正碼一起寫進圖案中。掃描器在定位成功後，可以利用額外的冗餘資料修正一部分錯誤或遺失的codewords。</p>
+<div class="note good big-answer">但「缺一角還能掃」不是保證。破損位置如果剛好傷到定位圖樣、時序圖樣、格式資訊或外圍Quiet Zone，可能在進入錯誤更正之前，就已經無法正確定位或取樣。</div>
+<div class="grid"><div class="card"><span class="tag">關鍵1</span><h3>先找到QR Code</h3><p>三個角落的Finder Pattern讓讀取器快速判斷QR Code的位置、方向與旋轉角度。</p></div><div class="card"><span class="tag">關鍵2</span><h3>再修復資料</h3><p>資料區同時包含資料codewords與Reed-Solomon錯誤更正codewords，因此局部汙損不一定會造成內容遺失。</p></div></div>
+<div class="source">對應Wiki來源：DENSO WAVE「What is a QR Code?」「Error correction feature」「History of QR Code」；ISO/IEC 18004:2024。</div></section>
+
+<section class="section" id="structure"><h2>2. 一張QR Code裡不只有資料</h2>
+<p class="lead">黑白小格叫做module。QR Code Model 2共有40個version，Version 1是21×21 modules，之後每升一個version，每邊增加4個modules，直到Version 40的177×177。</p>
+<img class="structure" src="assets/qr_structure.png" alt="QR Code結構示意">
+<div class="grid" style="margin-top:18px"><div class="card"><h3>Finder Pattern</h3><p>三個大方框位在三個角落，是定位與判斷方向的重要結構。DENSO WAVE說明其黑白比例設計為1:1:3:1:1，目的就是降低和一般印刷圖樣混淆的機會。</p></div><div class="card"><h3>Quiet Zone</h3><p>QR Code周圍需要留白，讓讀取器能把符號和背景分離。DENSO WAVE的產生指南指出，標準QR Code周圍需要margin。</p></div><div class="card"><h3>Timing / Alignment</h3><p>Timing Pattern協助建立module網格；較高version還會使用Alignment Pattern來校正失真。</p></div><div class="card"><h3>Data + ECC</h3><p>真正的資料與錯誤更正碼會分布在剩餘區域，之後再套用mask，避免出現太難掃描的圖樣。</p></div></div>
+<div class="source">對應Wiki來源：DENSO WAVE「History」「Information capacity and versions」「Generating a QR Code」與ISO/IEC 18004:2024。</div></section>
+
+<section class="section" id="correction"><h2>3. 為什麼資料壞掉還有機會救回來？</h2>
+<p class="lead">QR Code使用Reed-Solomon Code做錯誤更正。簡單說，就是除了原始資料之外，再加入一批可以用來重建資料的冗餘codewords。</p>
+<div class="grid"><div class="card"><span class="tag">L</span><h3>約7%</h3><p>偏向容量，錯誤更正較少。</p></div><div class="card"><span class="tag">M</span><h3>約15%</h3><p>DENSO WAVE表示M是常見選擇。</p></div><div class="card"><span class="tag">Q</span><h3>約25%</h3><p>適合較容易髒污的環境。</p></div><div class="card"><span class="tag">H</span><h3>約30%</h3><p>最高的一般QR Code錯誤更正級別，但資料容量也會下降。</p></div></div>
+<div class="note warn"><b>最重要的檢查：</b>這些比例是DENSO WAVE所描述的「總codewords可復原比例」的近似值，不等於「可以任意剪掉相同比例的圖片面積」。</div>
+<p>Reed-Solomon特別適合處理集中發生的錯誤，但最後能否掃到，仍會受資料分布、interleaving、破損形狀、是否傷到結構區，以及讀取器實作影響。</p>
+<div class="source">對應Wiki來源：DENSO WAVE「Error correction feature」「QR Code Standardization」。</div></section>
+
+<section class="section" id="decode"><h2>4. 掃描器其實經過很多步驟</h2>
+<div class="flow"><span class="step">找Finder Pattern</span><span class="arrow">→</span><span class="step">估計位置與透視</span><span class="arrow">→</span><span class="step">建立module網格</span><span class="arrow">→</span><span class="step">讀format / mask</span><span class="arrow">→</span><span class="step">取出codewords</span><span class="arrow">→</span><span class="step">Reed-Solomon修正</span><span class="arrow">→</span><span class="step">解碼內容</span></div>
+<div class="note">所以「資料區壞掉」和「定位結構壞掉」是不同問題。前者可能進入ECC修復；後者可能連codewords都還沒讀出來。</div>
+<div class="source">流程依ISO/IEC 18004規範範圍、DENSO結構說明與Nayuki的QR Code Model 2實作文件整理。</div></section>
+
+<section class="section" id="damage"><h2>5. 「缺一角」到底是哪一角？</h2>
+<div class="grid"><div class="card"><h3>情況A：資料區被遮到</h3><p>只要定位仍成功，而且受損codewords沒有超出ECC能力，就可能照樣解碼。這也是貼小Logo在QR中央有時仍可掃描的原因之一。</p></div><div class="card"><h3>情況B：Finder Pattern整個被破壞</h3><p>風險高很多。一般QR Code有三個Finder Pattern，標準偵測會依賴這些結構；某些讀取器也許有額外容錯，但不能把它當成QR Code本身的保證。</p></div><div class="card"><h3>情況C：Quiet Zone被背景吃掉</h3><p>即使資料完全沒壞，過度靠近文字或圖案、裁掉外圍留白，也可能降低辨識成功率。</p></div><div class="card"><h3>情況D：整張縮太小或模糊</h3><p>每個module無法被穩定取樣時，ECC也無法補救所有問題。DENSO WAVE建議依印表機與掃描器能力選擇module尺寸。</p></div></div>
+<div class="note bad"><b>因此更精確的說法是：</b>QR Code對「一部分資料損壞」具有容錯能力，不是「缺任何一角都一定掃得到」。</div></section>
+
+<section class="section" id="experiment"><h2>6. 實際做一次破損測試</h2>
+<p class="lead">我用同一段文字建立Version 6、41×41 modules的QR Code，分別使用L/M/Q/H四個ECC級別，再把中央區域塗白。最後使用OpenCV QRCodeDetector解碼。這不是標準規範的保證值，只是一個「實際執行紀錄」。</p>
+<div class="grid"><div class="card"><h3>原始H級</h3><img src="assets/qr_original_H.png" style="width:100%;max-width:270px" alt="原始QR"><p class="ok">✓ OpenCV可解碼</p></div><div class="card"><h3>中央約20%塗白</h3><img src="assets/qr_center_20_H.png" style="width:100%;max-width:270px" alt="中央20%損壞"><p class="ok">✓ H級仍可解碼</p></div><div class="card"><h3>中央約25%塗白</h3><img src="assets/qr_center_25_H.png" style="width:100%;max-width:270px" alt="中央25%損壞"><p class="fail">✕ H級此測試已失敗</p></div><div class="card"><h3>遮掉左上Finder</h3><img src="assets/qr_finder_damaged_H.png" style="width:100%;max-width:270px" alt="Finder Pattern損壞"><p class="fail">✕ H級此測試失敗</p></div></div>
+<h3 style="margin-top:24px">同一測試的成功上限（本次OpenCV結果）</h3>
+<table><thead><tr><th>ECC</th><th>中央白色方塊</th><th>再大一級</th><th>Finder被遮</th></tr></thead><tbody><tr><td>L</td><td class="ok">5%成功</td><td class="fail">8%失敗</td><td class="fail">失敗</td></tr><tr><td>M</td><td class="ok">12%成功</td><td class="fail">15%失敗</td><td class="fail">失敗</td></tr><tr><td>Q</td><td class="ok">18%成功</td><td class="fail">20%失敗</td><td class="fail">失敗</td></tr><tr><td>H</td><td class="ok">20%成功</td><td class="fail">25%失敗</td><td class="fail">失敗</td></tr></tbody></table>
+<div class="note warn"><b>檢查結論：</b>H級標示約30%可復原codewords，但這次「25%視覺面積」已經解不出來。這直接證明不能把ECC百分比當作可裁掉的圖片百分比。</div>
+<div class="btnrow"><a class="btn secondary" href="experiment_results.csv">下載完整40筆測試CSV</a></div></section>
+
+<section class="section" id="workflow"><h2>7. LLM Wiki的loop / graph</h2>
+<p class="lead">這份Wiki不是「找到資料就直接叫LLM寫簡報」，而是把資料取得、Wiki整理與事實檢查分開，讓錯誤在進入簡報之前就被抓到。</p>
+<img class="structure" src="assets/workflow.svg" alt="workflow graph">
+<div class="grid" style="margin-top:18px"><div class="card"><h3>會重複的地方</h3><p>「查詢Wiki→整理重點→事實檢查」是一個loop。只要不同來源說法不一致、句子太絕對，或實驗結果與整理內容不符，就回到Wiki重新查。</p></div><div class="card"><h3>重新生成的條件</h3><p>簡報若把「codeword比例」寫成「圖片破損比例」、把「可能掃得到」寫成「一定掃得到」，就退回事實檢查節點，不直接修飾文字。</p></div><div class="card"><h3>為什麼這樣設計</h3><p>LLM最容易在「把技術概念講簡單」時過度簡化，所以檢查應該放在摘要完成後、簡報生成前，而不是等到HTML都做好才發現。</p></div><div class="card"><h3>實際修改</h3><p>第一次整理時，曾把H級約30%理解成可承受約30%面積損壞。查回DENSO來源後發現它是codewords比例，因此新增「術語檢查＋解碼實驗」節點。</p></div></div></section>
+
+<section class="section" id="sources"><h2>8. Ingest的7篇資料</h2><p class="lead">每篇資料先摘要成可查詢的Wiki節點，再由簡報生成階段選用。下面也標出它在簡報中負責回答什麼問題。</p>
+<div class="source-list">
+<div class="source-item"><b>DENSO WAVE — What is a QR Code?</b><br>用途：QR Code主要功能、三角定位圖樣、耐汙損概念。<br><a href="https://www.qrcode.com/en/about/index.html">來源頁</a></div>
+<div class="source-item"><b>DENSO WAVE — Error correction feature</b><br>用途：Reed-Solomon、L/M/Q/H，以及7/15/25/30%是codewords復原比例。<br><a href="https://www.qrcode.com/en/about/error_correction.html">來源頁</a></div>
+<div class="source-item"><b>DENSO WAVE — History of QR Code</b><br>用途：1994年、Finder Pattern設計目的，以及1:1:3:1:1比例。<br><a href="https://www.qrcode.com/en/history/">來源頁</a></div>
+<div class="source-item"><b>DENSO WAVE — Information capacity and versions</b><br>用途：Version 1~40、21×21到177×177、每版每邊增加4 modules。<br><a href="https://www.qrcode.com/en/about/version.html">來源頁</a></div>
+<div class="source-item"><b>DENSO WAVE — Generating a QR Code</b><br>用途：module尺寸、margin/Quiet Zone、印刷與可讀性注意事項。<br><a href="https://www.qrcode.com/en/howto/generate.html">來源頁</a></div>
+<div class="source-item"><b>ISO/IEC 18004:2024</b><br>用途：確認QR Code國際標準涵蓋編碼、symbol format、error correction與reference decoding algorithm。<br><a href="https://www.iso.org/standard/83389.html">來源頁</a></div>
+<div class="source-item"><b>Nayuki — QR Code generator library</b><br>用途：交叉確認Model 2的40 versions、4個ECC level與mask等實作概念，並作為技術實作參考。<br><a href="https://www.nayuki.io/page/qr-code-generator-library">來源頁</a></div>
+</div>
+<h3>Wiki → 簡報對應</h3><div class="card mapping"><b>Wiki：結構</b><span>簡報第3頁「QR Code裡有哪些東西？」</span><b>Wiki：錯誤更正</b><span>簡報第5～6頁「Reed-Solomon與ECC等級」</span><b>Wiki：解碼流程</b><span>簡報第4頁「手機如何把QR讀出來」</span><b>Wiki：破損迷思</b><span>簡報第7～9頁「30%不等於面積、實驗與缺角情境」</span><b>Wiki：Workflow</b><span>簡報附錄「loop / graph與反思」</span></div>
+<div class="btnrow"><a class="btn" href="slides.html">開啟教學HTML簡報</a><a class="btn secondary" href="submission.txt">查看可直接繳交文字</a></div></section>
+</main><footer>QR Code LLM Wiki · 教學作業成果 · 2026</footer>
+</body></html>
